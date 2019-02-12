@@ -36,6 +36,10 @@ public class BlogApplication {
 		if (repository.count()==0)
 			userService.save(new User("admin", "adminPassword", Arrays.asList(new Role("USER"), new Role("ACTUATOR") , new Role("ADMIN"))));
 		builder.userDetailsService(userDetailsService(repository)).passwordEncoder(passwordEncoder);
+
+		if (repository.count()==1)
+			userService.save(new User("user1", "user1", Arrays.asList(new Role("USER"), new Role("ACTUATOR") , new Role("ClIENT"))));
+		builder.userDetailsService(userDetailsService(repository)).passwordEncoder(passwordEncoder);
 	}
 
 	/**

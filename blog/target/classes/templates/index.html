@@ -10,16 +10,41 @@
                 <h1>My blog</h1>
                 <ul>
                     <li v-for="post in posts">
+                        <div v-if="post.creator.username == 'uservalue'">
                         <h3><a :href="getLink(post)">{{post.title}}</a></h3>
                         <h6>Created by : {{post.creator.username}}</h6>
+
                         <p>{{post.body}}</p>
                         <hr />
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
+<div id="userlist">
+    <div class="container">
+        <div class="row">
+            <div class="twelve columns">
+                <h1>User List</h1>
+                <ul>
+                    <li v-for="user in users">
+                        <!--<div v-if="id == userid">-->
+                        <!--<h3><a :href="getLink(user)">{{user.name}}</a></h3>-->
+                        <h6>Creator of : {{user.name}}</h6>
+
+                        <p>{{users.roles}}</p>
+                        <hr />
+                        <!--</div>-->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <div th:replace="fragments/footer :: foot"></div>
 
@@ -32,12 +57,36 @@
         },
         methods: {
             fetchPosts(){
+                ''
                 axios.get("/posts").then(function(response){
                     this.posts = response.data;
                 }.bind(this));
             },
             getLink(post){
                 return '/post/' + post.id;
+            },
+        }
+
+    });
+    root.uservalue = 'admin'
+    // root.uservalue = this.username
+
+
+    var app = new Vue({
+        el: '#userlist',
+        data : {users: []},
+        mounted(){
+            this.fetchUsers();
+        },
+        methods: {
+            fetchUsers(){
+                ''
+                axios.get("/users").then(function(response){
+                    this.users = response.data;
+                }.bind(this));
+            },
+            getLink(user){
+                return '/user/' + user.id;
             }
         }
 
